@@ -5,7 +5,7 @@
 Módulo de la interfaz gráfica para FaceSwapPro.
 
 Este módulo contiene la clase AppWindow que implementa la interfaz
-gráfica de usuario utilizando Tkinter.
+gráfica de usuario utilizando Tkinter con un diseño moderno y atractivo.
 """
 
 import logging
@@ -22,7 +22,7 @@ class AppWindow:
     """
     Clase que implementa la interfaz gráfica de FaceSwapPro.
     
-    Proporciona una interfaz gráfica amigable para utilizar
+    Proporciona una interfaz gráfica moderna y amigable para utilizar
     las funcionalidades de intercambio de rostros.
     """
     
@@ -51,9 +51,26 @@ class AppWindow:
         
         # Crear ventana principal primero
         self.root = tk.Tk()
-        self.root.title("FaceSwapPro - Intercambio de Rostros Ultra Realista")
+        self.root.title("FaceSwapPro 🎭 - Intercambio de Rostros Ultra Realista")
         self.root.geometry("1200x800")
         self.root.minsize(1000, 700)
+        
+        # Definir colores de la aplicación
+        self.colors = {
+            "primary": "#4a6baf",      # Azul principal
+            "secondary": "#7986CB",    # Azul secundario
+            "accent": "#FF5252",       # Acento rojo
+            "success": "#66BB6A",      # Verde para éxito
+            "warning": "#FFA726",      # Naranja para advertencias
+            "background": "#F5F7FA",   # Fondo principal
+            "text": "#212121",         # Texto principal
+            "text_light": "#FFFFFF",   # Texto sobre fondos oscuros
+            "gray_light": "#E0E0E0",   # Gris claro para bordes
+            "gray_dark": "#9E9E9E"     # Gris oscuro para texto secundario
+        }
+        
+        # Configurar colores de la ventana principal
+        self.root.configure(bg=self.colors["background"])
         
         # Ahora es seguro crear las variables de Tkinter
         self.quality_level = tk.IntVar(value=2)  # Nivel de calidad: 1=Básico, 2=HD, 3=Ultra HD
@@ -77,7 +94,7 @@ class AppWindow:
         main_frame.pack(fill=tk.BOTH, expand=True)
         
         # Marco de control (izquierda)
-        control_frame = ttk.LabelFrame(main_frame, text="Control", padding="10")
+        control_frame = ttk.LabelFrame(main_frame, text="Control Panel", padding="10")
         control_frame.pack(side=tk.LEFT, fill=tk.Y, padx=(0, 10))
         
         # Marco de imágenes (derecha)
@@ -89,8 +106,9 @@ class AppWindow:
         self.setup_images_panel(images_frame)
         
         # Barra de estado
-        self.status_var = tk.StringVar(value="Listo")
-        status_bar = ttk.Label(self.root, textvariable=self.status_var, relief=tk.SUNKEN, anchor=tk.W)
+        self.status_var = tk.StringVar(value="Listo para transformar rostros ✨")
+        status_bar = ttk.Label(self.root, textvariable=self.status_var, relief=tk.GROOVE, 
+                             anchor=tk.W, padding=(10, 5))
         status_bar.pack(side=tk.BOTTOM, fill=tk.X)
         
         # Cargar imágenes disponibles
@@ -98,7 +116,7 @@ class AppWindow:
     
     def setup_style(self):
         """
-        Configura el estilo visual de la aplicación.
+        Configura el estilo visual moderno de la aplicación.
         """
         style = ttk.Style()
         
@@ -109,39 +127,115 @@ class AppWindow:
             pass  # Si el tema no está disponible, usar el predeterminado
         
         # Estilos personalizados
-        style.configure("TButton", padding=6, font=("Segoe UI", 10))
-        style.configure("TLabel", font=("Segoe UI", 10))
-        style.configure("TFrame", background="#f0f0f0")
-        style.configure("Header.TLabel", font=("Segoe UI", 12, "bold"))
-        style.configure("Title.TLabel", font=("Segoe UI", 14, "bold"))
-        style.configure("Big.TButton", font=("Segoe UI", 12, "bold"), padding=10)
+        style.configure("TFrame", background=self.colors["background"])
+        style.configure("TLabelframe", background=self.colors["background"])
+        style.configure("TLabelframe.Label", 
+                       font=("Segoe UI", 11, "bold"), 
+                       foreground=self.colors["primary"])
         
-        # Estilos para radiobuttons de calidad
-        style.configure("TRadiobutton", font=("Segoe UI", 10))
+        # Etiquetas
+        style.configure("TLabel", 
+                       font=("Segoe UI", 10),
+                       background=self.colors["background"],
+                       foreground=self.colors["text"])
+        
+        style.configure("Header.TLabel", 
+                       font=("Segoe UI", 12, "bold"),
+                       foreground=self.colors["primary"])
+        
+        style.configure("Title.TLabel", 
+                       font=("Segoe UI", 16, "bold"),
+                       foreground=self.colors["primary"])
+        
+        style.configure("Info.TLabel", 
+                       font=("Segoe UI", 9),
+                       foreground=self.colors["gray_dark"])
+        
+        # Botones
+        style.configure("TButton", 
+                       font=("Segoe UI", 10),
+                       padding=6)
+        
+        style.configure("Primary.TButton", 
+                       background=self.colors["primary"],
+                       foreground=self.colors["text_light"])
+        
+        style.map("Primary.TButton",
+                 background=[('active', self.colors["secondary"])],
+                 foreground=[('active', self.colors["text_light"])])
+        
+        style.configure("Accent.TButton", 
+                       background=self.colors["accent"],
+                       foreground=self.colors["text_light"])
+        
+        style.map("Accent.TButton",
+                 background=[('active', '#FF7575')],
+                 foreground=[('active', self.colors["text_light"])])
+        
+        style.configure("Success.TButton", 
+                       background=self.colors["success"],
+                       foreground=self.colors["text_light"])
+        
+        style.map("Success.TButton",
+                 background=[('active', '#88CC8C')],
+                 foreground=[('active', self.colors["text_light"])])
+        
+        # Botón grande para procesar
+        style.configure("Big.TButton", 
+                       font=("Segoe UI", 12, "bold"),
+                       padding=12)
+        
+        # Combobox
+        style.configure("TCombobox", 
+                       padding=5,
+                       foreground=self.colors["text"])
+        
+        # Radiobuttons
+        style.configure("TRadiobutton", 
+                       font=("Segoe UI", 10),
+                       background=self.colors["background"],
+                       foreground=self.colors["text"])
+        
+        # Barra de progreso
+        style.configure("TProgressbar", 
+                       background=self.colors["success"],
+                       troughcolor=self.colors["gray_light"])
     
     def setup_control_panel(self, parent):
         """
-        Configura el panel de control.
+        Configura el panel de control moderno.
         
         Args:
             parent: Widget padre donde se colocará el panel de control.
         """
-        # Título
-        title_label = ttk.Label(parent, text="FaceSwapPro", style="Title.TLabel")
-        title_label.pack(pady=(0, 10))
+        # Título con logo
+        title_frame = ttk.Frame(parent, padding=(0, 0, 0, 10))
+        title_frame.pack(fill=tk.X)
+        
+        title_label = ttk.Label(title_frame, text="FaceSwapPro", style="Title.TLabel")
+        title_label.pack(pady=(0, 5))
+        
+        slogan_label = ttk.Label(title_frame, text="Transformación facial avanzada", 
+                               style="Info.TLabel")
+        slogan_label.pack()
+        
+        # Separador
+        ttk.Separator(parent, orient=tk.HORIZONTAL).pack(fill=tk.X, pady=(0, 15))
         
         # Sección de imágenes
-        images_section = ttk.LabelFrame(parent, text="Selección de Imágenes", padding="10")
-        images_section.pack(fill=tk.X, pady=(0, 10))
+        images_section = ttk.LabelFrame(parent, text="📷 Selección de Imágenes", padding="10")
+        images_section.pack(fill=tk.X, pady=(0, 15))
         
         # Combobox para imagen fuente
-        ttk.Label(images_section, text="Imagen Fuente (rostro a usar):").pack(anchor=tk.W)
+        ttk.Label(images_section, text="Imagen Fuente (rostro a usar):", 
+                 style="Header.TLabel").pack(anchor=tk.W, pady=(0, 5))
         self.source_combo = ttk.Combobox(images_section, state="readonly", width=30)
         self.source_combo.pack(fill=tk.X, pady=(0, 10))
         self.source_combo.bind("<<ComboboxSelected>>", self.on_source_selected)
         
         # Combobox para imagen objetivo
-        ttk.Label(images_section, text="Imagen Objetivo (donde poner el rostro):").pack(anchor=tk.W)
+        ttk.Label(images_section, text="Imagen Objetivo (donde poner el rostro):", 
+                 style="Header.TLabel").pack(anchor=tk.W, pady=(0, 5))
         self.target_combo = ttk.Combobox(images_section, state="readonly", width=30)
         self.target_combo.pack(fill=tk.X, pady=(0, 10))
         self.target_combo.bind("<<ComboboxSelected>>", self.on_target_selected)
@@ -150,66 +244,81 @@ class AppWindow:
         btn_frame = ttk.Frame(images_section)
         btn_frame.pack(fill=tk.X, pady=(5, 0))
         
-        ttk.Button(btn_frame, text="Cargar Imagen...", 
+        ttk.Button(btn_frame, text="Cargar Imagen...", style="Primary.TButton",
                   command=self.on_load_image).pack(side=tk.LEFT, padx=(0, 5))
         ttk.Button(btn_frame, text="Actualizar Lista", 
                   command=self.load_available_images).pack(side=tk.LEFT)
         
         # Sección de calidad
-        quality_section = ttk.LabelFrame(parent, text="Nivel de Calidad", padding="10")
-        quality_section.pack(fill=tk.X, pady=(0, 10))
+        quality_section = ttk.LabelFrame(parent, text="✨ Nivel de Calidad", padding="10")
+        quality_section.pack(fill=tk.X, pady=(0, 15))
         
         # Opciones de calidad
-        ttk.Radiobutton(quality_section, text="Básico (Más rápido)", 
-                       variable=self.quality_level, value=1).pack(anchor=tk.W)
-        ttk.Radiobutton(quality_section, text="HD (Recomendado)", 
-                       variable=self.quality_level, value=2).pack(anchor=tk.W)
-        ttk.Radiobutton(quality_section, text="Ultra HD (Más lento)", 
-                       variable=self.quality_level, value=3).pack(anchor=tk.W)
+        qual_frame = ttk.Frame(quality_section)
+        qual_frame.pack(fill=tk.X, pady=(5, 5))
+        
+        # Radiobuttons con mejor aspecto
+        ttk.Radiobutton(qual_frame, text="Básico", variable=self.quality_level, 
+                       value=1).grid(row=0, column=0, sticky=tk.W, padx=(0, 10), pady=5)
+        ttk.Label(qual_frame, text="Más rápido", style="Info.TLabel").grid(row=0, column=1, sticky=tk.W)
+        
+        ttk.Radiobutton(qual_frame, text="HD", variable=self.quality_level, 
+                       value=2).grid(row=1, column=0, sticky=tk.W, padx=(0, 10), pady=5)
+        ttk.Label(qual_frame, text="Recomendado", style="Info.TLabel").grid(row=1, column=1, sticky=tk.W)
+        
+        ttk.Radiobutton(qual_frame, text="Ultra HD", variable=self.quality_level, 
+                       value=3).grid(row=2, column=0, sticky=tk.W, padx=(0, 10), pady=5)
+        ttk.Label(qual_frame, text="Más lento, mejor calidad", style="Info.TLabel").grid(row=2, column=1, sticky=tk.W)
         
         # Sección de acciones
-        actions_section = ttk.LabelFrame(parent, text="Acciones", padding="10")
-        actions_section.pack(fill=tk.X, pady=(0, 10))
+        actions_section = ttk.LabelFrame(parent, text="🚀 Acciones", padding="10")
+        actions_section.pack(fill=tk.X, pady=(0, 15))
         
-        # Botón de procesar
+        # Botón de procesar (con más estilo)
         self.process_btn = ttk.Button(actions_section, text="¡Intercambiar Rostros!", 
-                                     style="Big.TButton", command=self.on_process)
-        self.process_btn.pack(fill=tk.X, pady=(0, 10))
+                                    style="Big.TButton", command=self.on_process)
+        self.process_btn.pack(fill=tk.X, pady=(5, 15))
         
-        # Más acciones
-        ttk.Button(actions_section, text="Ver Resultado", 
-                  command=self.on_view_result).pack(fill=tk.X, pady=(0, 5))
-        ttk.Button(actions_section, text="Guardar Como...", 
-                  command=self.on_save_as).pack(fill=tk.X, pady=(0, 5))
-        ttk.Button(actions_section, text="Abrir Carpeta de Salida", 
+        # Más acciones con mejores estilos
+        action_btns_frame = ttk.Frame(actions_section)
+        action_btns_frame.pack(fill=tk.X)
+        
+        ttk.Button(action_btns_frame, text="Ver Resultado", style="Success.TButton",
+                  command=self.on_view_result).pack(fill=tk.X, pady=(0, 8))
+        ttk.Button(action_btns_frame, text="Guardar Como...", style="Primary.TButton",
+                  command=self.on_save_as).pack(fill=tk.X, pady=(0, 8))
+        ttk.Button(action_btns_frame, text="Abrir Carpeta de Salida", 
                   command=self.on_open_output_folder).pack(fill=tk.X)
         
         # Indicador de progreso
-        progress_section = ttk.LabelFrame(parent, text="Progreso", padding="10")
-        progress_section.pack(fill=tk.X, pady=(0, 10))
+        progress_section = ttk.LabelFrame(parent, text="📊 Progreso", padding="10")
+        progress_section.pack(fill=tk.X, pady=(0, 15))
         
-        self.progress = ttk.Progressbar(progress_section, orient=tk.HORIZONTAL, length=100, mode='determinate')
-        self.progress.pack(fill=tk.X, pady=(0, 5))
+        self.progress = ttk.Progressbar(progress_section, orient=tk.HORIZONTAL, 
+                                      length=100, mode='determinate', style="TProgressbar")
+        self.progress.pack(fill=tk.X, pady=(5, 8))
         
-        self.progress_label = ttk.Label(progress_section, text="Listo")
+        self.progress_label = ttk.Label(progress_section, text="Listo", style="Info.TLabel")
         self.progress_label.pack(anchor=tk.W)
         
         # Sección de información
-        info_section = ttk.LabelFrame(parent, text="Información", padding="10")
+        info_section = ttk.LabelFrame(parent, text="ℹ️ Información", padding="10")
         info_section.pack(fill=tk.X)
         
-        ttk.Label(info_section, text="Desarrollado por FaceSwapPro Team", wraplength=250).pack()
-        ttk.Label(info_section, text="Versión 1.0.0", foreground="gray").pack()
+        ttk.Label(info_section, text="Desarrollado por FaceSwapPro Team", 
+                 wraplength=250).pack(pady=(0, 5))
+        ttk.Label(info_section, text="Versión 1.0.0", 
+                 foreground=self.colors["gray_dark"]).pack()
     
     def setup_images_panel(self, parent):
         """
-        Configura el panel de imágenes.
+        Configura el panel de imágenes moderno.
         
         Args:
             parent: Widget padre donde se colocará el panel de imágenes.
         """
         # Marco para las imágenes
-        images_label_frame = ttk.LabelFrame(parent, text="Imágenes", padding="10")
+        images_label_frame = ttk.LabelFrame(parent, text="📸 Vista Previa de Imágenes", padding="10")
         images_label_frame.pack(fill=tk.BOTH, expand=True)
         
         # Paneles para las imágenes
@@ -217,29 +326,32 @@ class AppWindow:
         images_panel.pack(fill=tk.BOTH, expand=True)
         
         # Panel para imagen fuente
-        source_frame = ttk.LabelFrame(images_panel, text="Imagen Fuente", padding="5")
-        source_frame.grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
+        source_frame = ttk.LabelFrame(images_panel, text="Imagen Fuente", padding="8")
+        source_frame.grid(row=0, column=0, padx=8, pady=8, sticky="nsew")
         
-        self.source_canvas = tk.Canvas(source_frame, bg="#e0e0e0", highlightthickness=0)
+        self.source_canvas = tk.Canvas(source_frame, bg=self.colors["gray_light"], 
+                                     highlightthickness=0)
         self.source_canvas.pack(fill=tk.BOTH, expand=True)
         
         # Panel para imagen objetivo
-        target_frame = ttk.LabelFrame(images_panel, text="Imagen Objetivo", padding="5")
-        target_frame.grid(row=0, column=1, padx=5, pady=5, sticky="nsew")
+        target_frame = ttk.LabelFrame(images_panel, text="Imagen Objetivo", padding="8")
+        target_frame.grid(row=0, column=1, padx=8, pady=8, sticky="nsew")
         
-        self.target_canvas = tk.Canvas(target_frame, bg="#e0e0e0", highlightthickness=0)
+        self.target_canvas = tk.Canvas(target_frame, bg=self.colors["gray_light"], 
+                                     highlightthickness=0)
         self.target_canvas.pack(fill=tk.BOTH, expand=True)
         
-        # Panel para resultado
-        result_frame = ttk.LabelFrame(images_panel, text="Resultado", padding="5")
-        result_frame.grid(row=1, column=0, columnspan=2, padx=5, pady=5, sticky="nsew")
+        # Panel para resultado (más grande)
+        result_frame = ttk.LabelFrame(images_panel, text="Resultado Final", padding="8")
+        result_frame.grid(row=1, column=0, columnspan=2, padx=8, pady=8, sticky="nsew")
         
-        self.result_canvas = tk.Canvas(result_frame, bg="#e0e0e0", highlightthickness=0)
+        self.result_canvas = tk.Canvas(result_frame, bg=self.colors["gray_light"], 
+                                     highlightthickness=0)
         self.result_canvas.pack(fill=tk.BOTH, expand=True)
         
         # Configurar proporciones de la cuadrícula
         images_panel.grid_rowconfigure(0, weight=1)
-        images_panel.grid_rowconfigure(1, weight=1)
+        images_panel.grid_rowconfigure(1, weight=2)  # Dar más espacio al resultado
         images_panel.grid_columnconfigure(0, weight=1)
         images_panel.grid_columnconfigure(1, weight=1)
     
@@ -263,7 +375,7 @@ class AppWindow:
                              "No hay imágenes disponibles en la carpeta de datos.\n"
                              "Por favor, cargue algunas imágenes usando 'Cargar Imagen'.")
         else:
-            self.status_var.set(f"Se encontraron {len(images)} imágenes.")
+            self.status_var.set(f"Se encontraron {len(images)} imágenes. ¡Listo para comenzar!")
             
             # Seleccionar las primeras imágenes si hay más de una
             if len(images) >= 2:
@@ -293,6 +405,9 @@ class AppWindow:
         
         # Mostrar imagen
         self.show_image_on_canvas(self.source_img_path, self.source_canvas)
+        
+        # Actualizar estado
+        self.status_var.set(f"Imagen fuente seleccionada: {selected}")
     
     def on_target_selected(self, event):
         """
@@ -310,6 +425,9 @@ class AppWindow:
         
         # Mostrar imagen
         self.show_image_on_canvas(self.target_img_path, self.target_canvas)
+        
+        # Actualizar estado
+        self.status_var.set(f"Imagen objetivo seleccionada: {selected}")
     
     def on_load_image(self):
         """
@@ -324,6 +442,7 @@ class AppWindow:
             return
         
         # Copiar archivos seleccionados a la carpeta de datos
+        copied_files = []
         for file_path in file_paths:
             file_name = os.path.basename(file_path)
             dest_path = os.path.join(self.app.data_dir, file_name)
@@ -332,12 +451,19 @@ class AppWindow:
                 import shutil
                 shutil.copy2(file_path, dest_path)
                 self.logger.info(f"Imagen copiada a: {dest_path}")
+                copied_files.append(file_name)
             except Exception as e:
                 self.logger.error(f"Error al copiar imagen: {e}")
                 messagebox.showerror("Error", f"No se pudo copiar la imagen: {e}")
         
         # Actualizar lista de imágenes
         self.load_available_images()
+        
+        # Mostrar mensaje de éxito
+        if copied_files:
+            self.status_var.set(f"Se cargaron {len(copied_files)} imágenes nuevas.")
+            messagebox.showinfo("Imágenes Cargadas", 
+                             f"Se cargaron {len(copied_files)} imágenes correctamente!")
     
     def on_process(self):
         """
@@ -357,6 +483,7 @@ class AppWindow:
         self.process_btn.state(['disabled'])
         self.progress['value'] = 0
         self.progress_label.config(text="Iniciando procesamiento...")
+        self.status_var.set("⏳ Procesando intercambio de rostros...")
         
         threading.Thread(target=self.process_face_swap, daemon=True).start()
     
@@ -370,9 +497,10 @@ class AppWindow:
             
             # Obtener nivel de calidad
             quality = self.quality_level.get()
+            quality_text = ["Básico", "HD", "Ultra HD"][quality - 1]
             
             # Procesar intercambio de rostros
-            self.update_progress(30, f"Realizando intercambio (nivel {quality})...")
+            self.update_progress(30, f"Realizando intercambio en calidad {quality_text}...")
             
             # Llamar al método de procesamiento de la aplicación principal
             self.result_img_path = self.app.process_face_swap(
@@ -390,13 +518,14 @@ class AppWindow:
                 return
             
             # Mostrar resultado
-            self.update_progress(80, "Cargando resultado...")
+            self.update_progress(80, "Cargando el resultado final...")
             self.root.after(0, lambda: self.show_image_on_canvas(self.result_img_path, self.result_canvas))
             
             # Completado
-            self.update_progress(100, "Procesamiento completado.")
-            self.root.after(0, lambda: messagebox.showinfo("Éxito", 
-                                                "¡Intercambio de rostros completado con éxito!"))
+            self.update_progress(100, "¡Procesamiento completado con éxito!")
+            self.root.after(0, lambda: messagebox.showinfo("¡Éxito!", 
+                                                "¡Intercambio de rostros completado con éxito!\n"
+                                                "El resultado se guardó en la carpeta de salida."))
         
         except Exception as e:
             self.logger.error(f"Error durante el procesamiento: {e}")
@@ -408,6 +537,7 @@ class AppWindow:
             # Restaurar estado
             self.processing = False
             self.root.after(0, lambda: self.process_btn.state(['!disabled']))
+            self.root.after(0, lambda: self.status_var.set("Listo para el próximo intercambio ✨"))
     
     def update_progress(self, value, text):
         """
@@ -457,7 +587,24 @@ class AppWindow:
             
             # Mostrar en canvas
             canvas.delete("all")
-            canvas.create_image(canvas_width // 2, canvas_height // 2, anchor=tk.CENTER, image=photo_img)
+            
+            # Crear un fondo para la imagen (mejora visual)
+            canvas.create_rectangle(0, 0, canvas_width, canvas_height, 
+                                   fill=self.colors["gray_light"], outline="")
+            
+            # Añadir un borde a la imagen
+            border_width = 2
+            canvas.create_rectangle(
+                canvas_width//2 - new_width//2 - border_width,
+                canvas_height//2 - new_height//2 - border_width,
+                canvas_width//2 + new_width//2 + border_width,
+                canvas_height//2 + new_height//2 + border_width,
+                outline=self.colors["primary"], width=border_width
+            )
+            
+            # Mostrar imagen
+            canvas.create_image(canvas_width // 2, canvas_height // 2, 
+                              anchor=tk.CENTER, image=photo_img)
             
             # Guardar referencia para evitar que sea eliminada por el recolector de basura
             if canvas == self.source_canvas:
@@ -470,8 +617,11 @@ class AppWindow:
         except Exception as e:
             self.logger.error(f"Error al mostrar imagen: {e}")
             canvas.delete("all")
+            canvas.create_rectangle(0, 0, canvas.winfo_width(), canvas.winfo_height(), 
+                                   fill=self.colors["gray_light"], outline="")
             canvas.create_text(canvas.winfo_width() // 2, canvas.winfo_height() // 2, 
-                              text="Error al cargar imagen", fill="red")
+                              text="Error al cargar imagen", fill=self.colors["accent"], 
+                              font=("Segoe UI", 11, "bold"))
     
     def on_view_result(self):
         """
@@ -489,6 +639,8 @@ class AppWindow:
                 os.startfile(self.result_img_path)
             elif os.name == 'posix':  # macOS, Linux
                 subprocess.call(('xdg-open', self.result_img_path))
+            
+            self.status_var.set("Visualizando resultado en visor de imágenes.")
         except Exception as e:
             self.logger.error(f"Error al abrir imagen resultante: {e}")
             messagebox.showerror("Error", f"No se pudo abrir la imagen: {e}")
@@ -519,7 +671,12 @@ class AppWindow:
             import shutil
             shutil.copy2(self.result_img_path, file_path)
             self.logger.info(f"Resultado guardado como: {file_path}")
-            messagebox.showinfo("Guardado", f"Imagen guardada exitosamente como:\n{file_path}")
+            
+            # Mostrar mensaje de éxito
+            messagebox.showinfo("Guardado Exitoso", 
+                             f"Imagen guardada exitosamente como:\n{file_path}")
+            
+            self.status_var.set(f"Imagen guardada como: {os.path.basename(file_path)}")
         except Exception as e:
             self.logger.error(f"Error al guardar imagen: {e}")
             messagebox.showerror("Error", f"No se pudo guardar la imagen: {e}")
@@ -538,6 +695,8 @@ class AppWindow:
                 os.startfile(self.app.output_dir)
             elif os.name == 'posix':  # macOS, Linux
                 subprocess.call(('xdg-open', self.app.output_dir))
+            
+            self.status_var.set("Abriendo carpeta de resultados...")
         except Exception as e:
             self.logger.error(f"Error al abrir carpeta de salida: {e}")
             messagebox.showerror("Error", f"No se pudo abrir la carpeta: {e}")
