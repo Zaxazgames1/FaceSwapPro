@@ -1,0 +1,5 @@
+# Dependencias para desarrollo y construcción
+pyinstaller>=5.13.0  # Para crear ejecutables
+pytest>=7.3.1  # Para ejecutar pruebas
+pylint>=2.17.0  # Para análisis estático de código
+black>=23.3.0  # Para formato de código
